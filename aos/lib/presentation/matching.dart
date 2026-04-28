@@ -523,7 +523,7 @@ class _MatchingState extends State<Matching> {
   }
 
   void filtre() {
-    users.removeWhere((user) => user.id != widget.id);
+    users.removeWhere((user) => user.id == widget.id);
     if (preferences.prefGender != "Both") {
       users.removeWhere((user) => user.sexe != preferences.prefGender);
     }
