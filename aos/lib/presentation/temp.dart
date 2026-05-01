@@ -23,7 +23,7 @@ class _TempState extends State<Temp> {
   @override
   void initState() {
     selectedItem = 1;
-    selectedPage = Matching(id: 8);
+    selectedPage = Matching(id: widget.id);
     super.initState();
   }
 
@@ -109,7 +109,10 @@ class _TempState extends State<Temp> {
                       InkWell(
                         onTap: () {
                           selectedItem = 5;
-                          selectedPage = Notifications(update: update2, id: 1);
+                          selectedPage = Notifications(
+                            update: update2,
+                            id: widget.id,
+                          );
                           setState(() {});
                         },
                         hoverColor: Colors.transparent,

@@ -1,6 +1,5 @@
 import 'package:aos/data/notifModel.dart';
 import 'package:aos/data/notifRemoteDataSource.dart';
-import 'package:aos/domain/user.dart';
 import 'package:flutter/material.dart';
 
 class Notifications extends StatefulWidget {
@@ -58,6 +57,7 @@ class _NotificationsState extends State<Notifications> {
 
   @override
   void initState() {
+    fetchData();
     super.initState();
   }
 
@@ -125,6 +125,7 @@ class _NotificationsState extends State<Notifications> {
                   return notif(
                     nom: users[i].nom,
                     prenom: users[i].prenom,
+                    msg: users[i].message,
                     update: widget.update,
                   );
                 },
@@ -143,12 +144,13 @@ class notif extends StatefulWidget {
     super.key,
     required this.nom,
     required this.prenom,
+    required this.msg,
     required this.update,
   });
 
   final String nom;
   final String prenom;
-
+  final String msg;
   final Function update;
 
   @override
@@ -180,7 +182,7 @@ class _notifState extends State<notif> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "${widget.nom} ${widget.prenom} Liked your profile",
+                  "${widget.nom} ${widget.prenom} ${widget.msg}",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ],

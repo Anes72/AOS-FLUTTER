@@ -61,8 +61,9 @@ class _MatchingState extends State<Matching> {
   Future<void> fetchData() async {
     users = await MatchingRemoteDataSource().getMatchings();
     preferences = await PrefRemoteDataSource().getPreferences(widget.id);
+    print(preferences.toJson());
     users.removeAt(0);
-    filtre();
+    // filtre();
     setState(() {
       match = true;
       i = 0;

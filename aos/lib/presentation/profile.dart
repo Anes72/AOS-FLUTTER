@@ -425,7 +425,7 @@ class _btnState extends State<btn> {
           borderRadius: BorderRadius.circular(25),
           onTap: () {
             if (widget.ext) {
-              widget.fct();
+              // widget.fct();
             } else {
               Navigator.of(context).push(animation(widget.dest));
             }
