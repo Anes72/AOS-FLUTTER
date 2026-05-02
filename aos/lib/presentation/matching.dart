@@ -435,7 +435,7 @@ class _MatchingState extends State<Matching> {
                                             onTap: () {
                                               model = Likemodel(
                                                 idTransmitter: widget.id,
-                                                idReceiver: users[i].id,
+                                                idReceiver: users[i].id + 1,
                                               );
                                               LikeRemoteDataSource().sendLike(
                                                 model,
