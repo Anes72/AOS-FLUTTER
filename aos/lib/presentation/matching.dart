@@ -63,10 +63,14 @@ class _MatchingState extends State<Matching> {
     preferences = await PrefRemoteDataSource().getPreferences(widget.id);
     print(preferences.toJson());
     users.removeAt(0);
+    users.removeAt(1);
+    users.removeAt(2);
     // filtre();
     setState(() {
-      match = true;
-      i = 0;
+      if (users.length > 0) {
+        match = true;
+        i = 0;
+      }
     });
   }
 
@@ -524,7 +528,7 @@ class _MatchingState extends State<Matching> {
   }
 
   void filtre() {
-    users.removeWhere((user) => user.id == widget.id);
+    users.removeWhere((user) => user.id + 1 == widget.id);
     if (preferences.prefGender != "Both") {
       users.removeWhere((user) => user.sexe != preferences.prefGender);
     }

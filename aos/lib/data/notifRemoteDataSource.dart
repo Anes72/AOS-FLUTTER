@@ -4,8 +4,8 @@ import 'package:http/http.dart' as http;
 
 class NotifRemoteDataSource {
   Future<List<NotifModel>> getNotifications(int userId) async {
-    final response = await http.get(
-      Uri.parse("http://127.0.0.1:8003/api/notifications/$userId"),
+    final response = await http.post(
+      Uri.parse("http://127.0.0.1:8003/api/notifications/$userId/"),
       headers: {"Content-Type": "application/json"},
     );
 

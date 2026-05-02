@@ -52,7 +52,14 @@ class _NotificationsState extends State<Notifications> {
   // ];
 
   List<NotifModel> users = [
-    NotifModel(id: 0, nom: "", prenom: "", message: ""),
+    NotifModel(
+      id: 0,
+      nom: "",
+      prenom: "",
+      sexe: "",
+      message: "",
+      hobbies: ["", ""],
+    ),
   ];
 
   @override
@@ -123,9 +130,12 @@ class _NotificationsState extends State<Notifications> {
                 ),
                 itemBuilder: (context, i) {
                   return notif(
+                    id: users[i].id,
                     nom: users[i].nom,
                     prenom: users[i].prenom,
+                    sexe: users[i].sexe,
                     msg: users[i].message,
+                    hobbies: users[i].hobbies,
                     update: widget.update,
                   );
                 },
@@ -142,15 +152,21 @@ class _NotificationsState extends State<Notifications> {
 class notif extends StatefulWidget {
   const notif({
     super.key,
+    required this.id,
     required this.nom,
     required this.prenom,
+    required this.sexe,
     required this.msg,
+    required this.hobbies,
     required this.update,
   });
 
+  final int id;
   final String nom;
   final String prenom;
+  final String sexe;
   final String msg;
+  final List<String> hobbies;
   final Function update;
 
   @override
@@ -162,7 +178,8 @@ class _notifState extends State<notif> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        widget.update();
+        print(widget.id);
+        widget.update(widget.id);
       },
       hoverColor: Colors.transparent,
       splashColor: Colors.transparent,
@@ -175,7 +192,9 @@ class _notifState extends State<notif> {
         ),
         child: Row(
           children: [
-            Image.asset("assets/notifman.png", height: 60),
+            (widget.sexe == "M")
+                ? Image.asset("assets/notifman.png", height: 60)
+                : Image.asset("assets/notifwoman.png", height: 60),
             SizedBox(width: 10),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -183,7 +202,11 @@ class _notifState extends State<notif> {
               children: [
                 Text(
                   "${widget.nom} ${widget.prenom} ${widget.msg}",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+                Text(
+                  "passionate about ${widget.hobbies[0]} and ${widget.hobbies[1]}.",
+                  style: TextStyle(fontSize: 13),
                 ),
               ],
             ),
