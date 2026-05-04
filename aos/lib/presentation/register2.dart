@@ -30,10 +30,48 @@ class _Register2State extends State<Register2> {
   RxBool female = false.obs;
   RxBool both = false.obs;
   List<String> hobbies = [];
+  Prefmodel preferences = Prefmodel(
+    id: 0,
+    town: "",
+    prefGender: "",
+    minAge: 0,
+    maxAge: 0,
+    hobbies: [],
+  );
 
   @override
   void initState() {
+    if (widget.edit) {
+      fetchData();
+    }
+
     super.initState();
+  }
+
+  Future<void> fetchData() async {
+    final data = await PrefRemoteDataSource().getPreferences(widget.editid);
+
+    setState(() {
+      preferences = data;
+      if (preferences.prefGender == "M") {
+        male.value = true;
+        female.value = false;
+        both.value = false;
+      } else if (preferences.prefGender == "F") {
+        female.value = true;
+        male.value = false;
+        both.value = false;
+      } else {
+        both.value = true;
+        male.value = false;
+        female.value = false;
+      }
+      values = RangeValues(
+        preferences.minAge as double,
+        preferences.maxAge as double,
+      );
+      hobbies = List.from(data.hobbies);
+    });
   }
 
   @override
@@ -501,36 +539,80 @@ class _Register2State extends State<Register2> {
                               SizedBox(height: 30),
                               Row(
                                 children: [
-                                  hobby(hob: "Politics", addHobby: addHobby),
+                                  hobby(
+                                    hob: "Politics",
+                                    addHobby: addHobby,
+                                    hobbies: preferences.hobbies,
+                                  ),
                                   SizedBox(width: 5),
-                                  hobby(hob: "Football", addHobby: addHobby),
+                                  hobby(
+                                    hob: "Football",
+                                    addHobby: addHobby,
+                                    hobbies: preferences.hobbies,
+                                  ),
                                   SizedBox(width: 5),
-                                  hobby(hob: "Reading", addHobby: addHobby),
+                                  hobby(
+                                    hob: "Reading",
+                                    addHobby: addHobby,
+                                    hobbies: preferences.hobbies,
+                                  ),
                                   SizedBox(width: 5),
-                                  hobby(hob: "Hiking", addHobby: addHobby),
+                                  hobby(
+                                    hob: "Hiking",
+                                    addHobby: addHobby,
+                                    hobbies: preferences.hobbies,
+                                  ),
                                 ],
                               ),
                               SizedBox(height: 5),
                               Row(
                                 children: [
-                                  hobby(hob: "Cooking", addHobby: addHobby),
+                                  hobby(
+                                    hob: "Cooking",
+                                    addHobby: addHobby,
+                                    hobbies: preferences.hobbies,
+                                  ),
                                   SizedBox(width: 5),
-                                  hobby(hob: "Astronomy", addHobby: addHobby),
+                                  hobby(
+                                    hob: "Astronomy",
+                                    addHobby: addHobby,
+                                    hobbies: preferences.hobbies,
+                                  ),
                                   SizedBox(width: 5),
-                                  hobby(hob: "Photography", addHobby: addHobby),
+                                  hobby(
+                                    hob: "Photography",
+                                    addHobby: addHobby,
+                                    hobbies: preferences.hobbies,
+                                  ),
                                   SizedBox(width: 5),
-                                  hobby(hob: "Yoga", addHobby: addHobby),
+                                  hobby(
+                                    hob: "Yoga",
+                                    addHobby: addHobby,
+                                    hobbies: preferences.hobbies,
+                                  ),
                                   SizedBox(width: 5),
                                 ],
                               ),
                               SizedBox(height: 5),
                               Row(
                                 children: [
-                                  hobby(hob: "Painting", addHobby: addHobby),
+                                  hobby(
+                                    hob: "Painting",
+                                    addHobby: addHobby,
+                                    hobbies: preferences.hobbies,
+                                  ),
                                   SizedBox(width: 5),
-                                  hobby(hob: "Music", addHobby: addHobby),
+                                  hobby(
+                                    hob: "Music",
+                                    addHobby: addHobby,
+                                    hobbies: preferences.hobbies,
+                                  ),
                                   SizedBox(width: 5),
-                                  hobby(hob: "Gaming", addHobby: addHobby),
+                                  hobby(
+                                    hob: "Gaming",
+                                    addHobby: addHobby,
+                                    hobbies: preferences.hobbies,
+                                  ),
                                 ],
                               ),
                               SizedBox(height: 30),
@@ -639,10 +721,16 @@ class _Register2State extends State<Register2> {
 }
 
 class hobby extends StatefulWidget {
-  const hobby({super.key, required this.hob, required this.addHobby});
+  const hobby({
+    super.key,
+    required this.hob,
+    required this.addHobby,
+    this.hobbies,
+  });
 
   final String hob;
   final Function addHobby;
+  final List<String>? hobbies;
 
   @override
   State<hobby> createState() => _hobbyState();
@@ -650,6 +738,23 @@ class hobby extends StatefulWidget {
 
 class _hobbyState extends State<hobby> {
   RxBool selected = false.obs;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.hobbies?.contains(widget.hob) == true) {
+      selected.value = true;
+      widget.addHobby(widget.hob, selected.value);
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant hobby oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    selected.value = widget.hobbies?.contains(widget.hob) == true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Obx(
