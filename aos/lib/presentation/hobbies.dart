@@ -61,11 +61,13 @@ class _HobbiesState extends State<Hobbies> {
                 itemCount: prefs.hobbies.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
-                  mainAxisSpacing: 15,
-                  childAspectRatio: 250 / 350,
+                  childAspectRatio: 999 / 1000,
                 ),
                 itemBuilder: (context, i) {
-                  return hobby(txt: prefs.hobbies[i], img: 'pg');
+                  return hobby(
+                    txt: prefs.hobbies[i],
+                    img: 'hob/${prefs.hobbies[i]}',
+                  );
                 },
               ),
               SizedBox(height: 20),

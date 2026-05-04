@@ -65,7 +65,7 @@ class _MatchingState extends State<Matching> {
     users.removeAt(0);
     users.removeAt(1);
     users.removeAt(2);
-    // filtre();
+    filtre();
     setState(() {
       if (users.length > 0) {
         match = true;

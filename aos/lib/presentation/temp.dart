@@ -137,13 +137,19 @@ class _TempState extends State<Temp> {
     );
   }
 
-  void update2(int id) {
-    selectedPage = Profile(key: UniqueKey(), id: id, ext: true, fct: update3);
+  void update2(int id, int? idt) {
+    selectedPage = Profile(
+      key: UniqueKey(),
+      id: id,
+      ext: true,
+      fct: update3,
+      idT: idt,
+    );
     setState(() {});
   }
 
-  void update3() {
-    selectedPage = Hobbies(id: widget.id);
+  void update3(int id) {
+    selectedPage = Hobbies(key: UniqueKey(), id: id);
     setState(() {});
   }
 

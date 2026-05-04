@@ -245,7 +245,7 @@ class _btn2State extends State<btn2> {
         child: InkWell(
           borderRadius: BorderRadius.circular(25),
           onTap: () {
-            widget.update(widget.id);
+            widget.update(widget.id, null);
           },
           child: Center(
             child: Text(

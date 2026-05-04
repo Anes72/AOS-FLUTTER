@@ -1,3 +1,5 @@
+import 'package:aos/data/likeModel.dart';
+import 'package:aos/data/likeRemoteDataSource.dart';
 import 'package:aos/data/profileModel.dart';
 import 'package:aos/data/profileRemoteDataSource.dart';
 import 'package:aos/presentation/register2.dart';
@@ -8,11 +10,13 @@ class Profile extends StatefulWidget {
   const Profile({
     super.key,
     required this.id,
+    this.idT,
     required this.ext,
     required this.fct,
   });
 
   final int id;
+  final int? idT;
   final bool ext;
   final Function fct;
 
@@ -146,25 +150,58 @@ class _ProfileState extends State<Profile> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 5,
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(40),
-                          color: Color.fromRGBO(192, 209, 255, 1),
-                        ),
-                        child: Text(
-                          "PROFILE SPOTLIGHT",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 9,
-                            color: Color.fromRGBO(0, 66, 156, 1),
-                            fontFamily: "pjs",
-                            letterSpacing: 1.5,
+                      Row(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 5,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(40),
+                              color: Color.fromRGBO(192, 209, 255, 1),
+                            ),
+                            child: Text(
+                              "PROFILE SPOTLIGHT",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 9,
+                                color: Color.fromRGBO(0, 66, 156, 1),
+                                fontFamily: "pjs",
+                                letterSpacing: 1.5,
+                              ),
+                            ),
                           ),
-                        ),
+                          SizedBox(width: 20),
+                          (widget.idT != null)
+                              ? InkWell(
+                                  onTap: () {
+                                    Likemodel model = Likemodel(
+                                      idTransmitter: widget.idT!,
+                                      idReceiver: widget.id,
+                                    );
+                                    LikeRemoteDataSource().sendLike(model);
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(30),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.1),
+                                          blurRadius: 5,
+                                          spreadRadius: 2,
+                                          offset: Offset(0, 10),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Image.asset(
+                                      "assets/like.png",
+                                      height: 40,
+                                    ),
+                                  ),
+                                )
+                              : SizedBox.shrink(),
+                        ],
                       ),
                       SizedBox(height: 20),
                       Text(
@@ -246,6 +283,7 @@ class _ProfileState extends State<Profile> {
                                 text: (widget.ext)
                                     ? "Hobbies"
                                     : "Edit Interests",
+                                id: widget.id,
                                 dest: Register2(edit: true, editid: widget.id),
                                 ext: widget.ext,
                                 fct: widget.fct,
@@ -259,9 +297,15 @@ class _ProfileState extends State<Profile> {
                   SizedBox(height: 20),
                   Row(
                     children: [
-                      hobby(txt: "Photography", img: "pg"),
+                      hobby(
+                        txt: user.hobbies[0],
+                        img: "hob/${user.hobbies[0]}",
+                      ),
                       SizedBox(width: 20),
-                      hobby(txt: "Architecture", img: "archi"),
+                      hobby(
+                        txt: user.hobbies[1],
+                        img: "hob/${user.hobbies[1]}",
+                      ),
                     ],
                   ),
                 ],
@@ -379,12 +423,14 @@ class btn extends StatefulWidget {
   const btn({
     super.key,
     required this.text,
+    required this.id,
     required this.dest,
     required this.ext,
     required this.fct,
   });
 
   final String text;
+  final int id;
   final Widget dest;
   final bool ext;
   final Function fct;
@@ -425,7 +471,7 @@ class _btnState extends State<btn> {
           borderRadius: BorderRadius.circular(25),
           onTap: () {
             if (widget.ext) {
-              // widget.fct();
+              widget.fct(widget.id);
             } else {
               Navigator.of(context).push(animation(widget.dest));
             }

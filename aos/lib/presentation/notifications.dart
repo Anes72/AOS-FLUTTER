@@ -129,15 +129,28 @@ class _NotificationsState extends State<Notifications> {
                   childAspectRatio: 250 / 60,
                 ),
                 itemBuilder: (context, i) {
-                  return notif(
-                    id: users[i].id,
-                    nom: users[i].nom,
-                    prenom: users[i].prenom,
-                    sexe: users[i].sexe,
-                    msg: users[i].message,
-                    hobbies: users[i].hobbies,
-                    update: widget.update,
-                  );
+                  if (users[i].message.contains("liked your profile")) {
+                    return notif(
+                      id: users[i].id,
+                      idT: widget.id,
+                      nom: users[i].nom,
+                      prenom: users[i].prenom,
+                      sexe: users[i].sexe,
+                      msg: users[i].message,
+                      hobbies: users[i].hobbies,
+                      update: widget.update,
+                    );
+                  } else {
+                    return notif(
+                      id: users[i].id,
+                      nom: users[i].nom,
+                      prenom: users[i].prenom,
+                      sexe: users[i].sexe,
+                      msg: users[i].message,
+                      hobbies: users[i].hobbies,
+                      update: widget.update,
+                    );
+                  }
                 },
               ),
               SizedBox(height: 20),
@@ -153,6 +166,7 @@ class notif extends StatefulWidget {
   const notif({
     super.key,
     required this.id,
+    this.idT,
     required this.nom,
     required this.prenom,
     required this.sexe,
@@ -162,6 +176,7 @@ class notif extends StatefulWidget {
   });
 
   final int id;
+  final int? idT;
   final String nom;
   final String prenom;
   final String sexe;
@@ -178,8 +193,7 @@ class _notifState extends State<notif> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        print(widget.id);
-        widget.update(widget.id);
+        widget.update(widget.id, widget.idT);
       },
       hoverColor: Colors.transparent,
       splashColor: Colors.transparent,
